@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Pooja Greenland Contours Map</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/Polygon_2.js"></script>
+        <script src="data/ContoursLables_3.js"></script>
+        <script src="data/ContoursLines_4.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[16.8110450616124,74.12739694431318],[16.814088917074702,74.1331602203442]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_GoogleHybrid_0');
+        map.getPane('pane_GoogleHybrid_0').style.zIndex = 400;
+        var layer_GoogleHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleHybrid_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleHybrid_0;
+        map.addLayer(layer_GoogleHybrid_0);
+        map.createPane('pane_OpenTopoMap_1');
+        map.getPane('pane_OpenTopoMap_1').style.zIndex = 401;
+        var layer_OpenTopoMap_1 = L.tileLayer('https://a.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenTopoMap_1',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">Kartendaten: © OpenStreetMap-Mitwirkende, SRTM | Kartendarstellung: © OpenTopoMap (CC-BY-SA)</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_OpenTopoMap_1;
+        map.addLayer(layer_OpenTopoMap_1);
+        function pop_Polygon_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Locatino Information</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Polygon_2_0() {
+            return {
+                pane: 'pane_Polygon_2',
+                opacity: 1,
+                color: 'rgba(255,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Polygon_2');
+        map.getPane('pane_Polygon_2').style.zIndex = 402;
+        map.getPane('pane_Polygon_2').style['mix-blend-mode'] = 'normal';
+        var layer_Polygon_2 = new L.geoJson(json_Polygon_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Polygon_2',
+            layerName: 'layer_Polygon_2',
+            pane: 'pane_Polygon_2',
+            onEachFeature: pop_Polygon_2,
+            style: style_Polygon_2_0,
+        });
+        bounds_group.addLayer(layer_Polygon_2);
+        map.addLayer(layer_Polygon_2);
+        function pop_ContoursLables_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Layer'] !== null ? autolinker.link(feature.properties['Layer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PaperSpace'] !== null ? autolinker.link(feature.properties['PaperSpace'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SubClasses'] !== null ? autolinker.link(feature.properties['SubClasses'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Linetype'] !== null ? autolinker.link(feature.properties['Linetype'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['EntityHandle'] !== null ? autolinker.link(feature.properties['EntityHandle'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Text'] !== null ? autolinker.link(feature.properties['Text'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ContoursLables_3_0() {
+            return {
+                fill: false,
+                stroke: false,
+                interactive: false
+            }
+        }
+        map.createPane('pane_ContoursLables_3');
+        map.getPane('pane_ContoursLables_3').style.zIndex = 403;
+        map.getPane('pane_ContoursLables_3').style['mix-blend-mode'] = 'normal';
+        var layer_ContoursLables_3 = new L.geoJson(json_ContoursLables_3, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_ContoursLables_3',
+            layerName: 'layer_ContoursLables_3',
+            pane: 'pane_ContoursLables_3',
+            onEachFeature: pop_ContoursLables_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ContoursLables_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ContoursLables_3);
+        map.addLayer(layer_ContoursLables_3);
+        function pop_ContoursLines_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Layer'] !== null ? autolinker.link(feature.properties['Layer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Elevation'] !== null ? autolinker.link(feature.properties['Elevation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ContoursLines_4_0(feature) {
+            switch(String(feature.properties['Elevation'])) {
+                case '760':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(252,255,164,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '761':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(245,249,146,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '762':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(242,242,125,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '763':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(242,234,105,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '764':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(244,225,86,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '765':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(246,215,70,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '766':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(248,205,55,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '767':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(250,196,42,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '768':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(251,186,31,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '769':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(252,176,20,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '770':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(252,166,12,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '771':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(251,157,7,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '772':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(250,148,7,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '773':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(249,139,11,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '774':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(247,130,18,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '775':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(244,121,24,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '776':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(241,113,31,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '777':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(237,105,37,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '778':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(233,97,43,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '779':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(228,90,49,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '780':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(223,83,55,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '781':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(217,77,61,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '782':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(211,71,67,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '783':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(204,66,72,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '784':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(198,61,77,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '785':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(191,57,82,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '786':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(183,53,87,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '787':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(176,49,91,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '788':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(168,46,95,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '789':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(160,42,99,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '790':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(152,39,102,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '791':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(144,37,104,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '792':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(136,34,106,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '793':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(128,31,108,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '794':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(120,28,109,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '795':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(113,25,110,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '796':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(105,22,110,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '797':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(97,19,110,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '798':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(89,16,110,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '799':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(81,14,108,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '800':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(73,11,106,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '801':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(64,10,103,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '802':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(56,9,98,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '803':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(47,10,91,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '804':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(38,12,81,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '805':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(30,12,69,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '806':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(22,11,57,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '807':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(16,9,45,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '808':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(10,7,34,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '809':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(5,4,23,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '810':
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(2,2,12,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_ContoursLines_4',
+                opacity: 1,
+                color: 'rgba(0,0,4,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ContoursLines_4');
+        map.getPane('pane_ContoursLines_4').style.zIndex = 404;
+        map.getPane('pane_ContoursLines_4').style['mix-blend-mode'] = 'normal';
+        var layer_ContoursLines_4 = new L.geoJson(json_ContoursLines_4, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_ContoursLines_4',
+            layerName: 'layer_ContoursLines_4',
+            pane: 'pane_ContoursLines_4',
+            onEachFeature: pop_ContoursLines_4,
+            style: style_ContoursLines_4_0,
+        });
+        bounds_group.addLayer(layer_ContoursLines_4);
+        map.addLayer(layer_ContoursLines_4);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Pooja Greenland Contours Map</h2>';
+            };
+            title.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Contours Lines<br /><table><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7600.png" /></td><td>760</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7611.png" /></td><td>761</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7622.png" /></td><td>762</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7633.png" /></td><td>763</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7644.png" /></td><td>764</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7655.png" /></td><td>765</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7666.png" /></td><td>766</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7677.png" /></td><td>767</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7688.png" /></td><td>768</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_7699.png" /></td><td>769</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77010.png" /></td><td>770</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77111.png" /></td><td>771</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77212.png" /></td><td>772</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77313.png" /></td><td>773</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77414.png" /></td><td>774</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77515.png" /></td><td>775</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77616.png" /></td><td>776</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77717.png" /></td><td>777</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77818.png" /></td><td>778</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_77919.png" /></td><td>779</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78020.png" /></td><td>780</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78121.png" /></td><td>781</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78222.png" /></td><td>782</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78323.png" /></td><td>783</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78424.png" /></td><td>784</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78525.png" /></td><td>785</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78626.png" /></td><td>786</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78727.png" /></td><td>787</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78828.png" /></td><td>788</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_78929.png" /></td><td>789</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79030.png" /></td><td>790</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79131.png" /></td><td>791</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79232.png" /></td><td>792</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79333.png" /></td><td>793</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79434.png" /></td><td>794</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79535.png" /></td><td>795</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79636.png" /></td><td>796</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79737.png" /></td><td>797</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79838.png" /></td><td>798</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_79939.png" /></td><td>799</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80040.png" /></td><td>800</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80141.png" /></td><td>801</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80242.png" /></td><td>802</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80343.png" /></td><td>803</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80444.png" /></td><td>804</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80545.png" /></td><td>805</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80646.png" /></td><td>806</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80747.png" /></td><td>807</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80848.png" /></td><td>808</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_80949.png" /></td><td>809</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_81050.png" /></td><td>810</td></tr><tr><td style="text-align: center;"><img src="legend/ContoursLines_4_51.png" /></td><td></td></tr></table>': layer_ContoursLines_4,'': layer_ContoursLables_3,'<img src="legend/Polygon_2.png" /> Polygon': layer_Polygon_2,"OpenTopoMap": layer_OpenTopoMap_1,"Google Hybrid": layer_GoogleHybrid_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_ContoursLables_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Text'] !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'Arial Rounded MT Bold\', sans-serif;">' + layer.feature.properties['Text']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_ContoursLables_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_ContoursLables_3]);
+        map.on("zoomend", function(){
+            resetLabels([layer_ContoursLables_3]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_ContoursLables_3]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_ContoursLables_3]);
+        });
+        </script>
+    </body>
+</html>
